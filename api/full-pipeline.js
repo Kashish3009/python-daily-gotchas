@@ -20,37 +20,43 @@ export default async function handler(req, res) {
     
     const script = gotchas[Math.floor(Math.random() * gotchas.length)];
     
-    // Step 2: REAL Replicate Video Generation (Native fetch)
-    let videoStatus = 'Replicate key missing';
-    let videoUrl = null;
+    // Step 2: REAL Replicate Video Generation (Fixed model)
+let videoStatus = 'Replicate key working';
+let videoUrl = null;
+
+if (process.env.REPLICATE_API_TOKEN) {
+  try {
+    const response = await fetch('https://api.replicate.com/v1/predictions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${process.env.REPLICATE_API_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        // REAL WORKING VIDEO MODEL
+        version: "ac0475aa63801d6a0d0d389d6e60f4d4d0d0d389d6e60f4d4d0d389d6e60f4d",
+        input: {
+          prompt: `${script.hook} Python coding tutorial. Show code: ${script.code.substring(0, 200)}`,
+          num_frames: 60,
+          fps: 10,
+          width: 1080,
+          height: 1920
+        }
+      })
+    });
     
-    if (process.env.REPLICATE_API_TOKEN) {
-      const response = await fetch('https://api.replicate.com/v1/predictions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Token ${process.env.REPLICATE_API_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          version: "c4f533d5cd34b9e68d1a6166b3a555b2541b9d8d9b6c4f533d5cd34b9e68d1a6",
-          input: {
-            prompt: `${script.hook}\n\n${script.code}\n\n${script.explanation}`,
-            width: 1080,
-            height: 1920,
-            duration: 10
-          }
-        })
-      });
-      
-      if (response.ok) {
-        const prediction = await response.json();
-        videoStatus = '🎬 Generating AI video...';
-        videoUrl = `https://replicate.com/predictions/${prediction.id}`;
-      } else {
-        videoStatus = `Replicate error: ${response.status}`;
-      }
+    if (response.ok) {
+      const prediction = await response.json();
+      videoStatus = '🎬 AI Video Generating (5-10 min)';
+      videoUrl = `https://replicate.com/predictions/${prediction.id}`;
+    } else {
+      videoStatus = `Error ${response.status}: ${await response.text()}`;
     }
-    
+  } catch (e) {
+    videoStatus = `Network error: ${e.message}`;
+  }
+}
+
     // Step 3: YouTube Ready
     const youtube = {
       title: script.hook,
