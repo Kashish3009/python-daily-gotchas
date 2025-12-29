@@ -2,9 +2,15 @@
   "buildCommand": "npm install",
   "outputDirectory": ".",
   "env": {
-    "OPENAI_API_KEY": "@openai_key",
-    "REPLICATE_API_TOKEN": "@replicate_token",
-    "YOUTUBE_AUTH_KEY": "@youtube_auth_key"
+    "OPENAI_API_KEY": {
+      "placeholder": "sk-..."
+    },
+    "REPLICATE_API_TOKEN": {
+      "placeholder": "r8_..."
+    },
+    "YOUTUBE_AUTH_KEY": {
+      "placeholder": "{...}"
+    }
   },
   "crons": [{
     "path": "/api/daily-upload",
