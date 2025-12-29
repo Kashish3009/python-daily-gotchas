@@ -137,3 +137,19 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Secrets & Keys
+youtube-auth-key.json
+*.env.local
+.env.keys
+
+# Generated files
+uploads-pending/
+videos/
+temp-video.html
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+

@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm install",
+  "outputDirectory": ".",
+  "env": {
+    "OPENAI_API_KEY": "@openai_key",
+    "REPLICATE_API_TOKEN": "@replicate_token",
+    "YOUTUBE_AUTH_KEY": "@youtube_auth_key"
+  },
+  "crons": [{
+    "path": "/api/daily-upload",
+    "schedule": "0 9 * * *"
+  }]
+}

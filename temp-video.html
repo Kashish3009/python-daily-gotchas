@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Gotcha</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            width: 1080px;
+            height: 1920px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+        .container { width: 90%; max-width: 900px; text-align: center; }
+        .hook {
+            font-size: 64px;
+            font-weight: bold;
+            margin-bottom: 60px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeIn 1s ease-in;
+        }
+        .code-container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #00ff00;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            font-size: 32px;
+            text-align: left;
+            min-height: 200px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+        .code { color: #00ff00; white-space: pre-wrap; word-wrap: break-word; font-weight: bold; }
+        .explanation {
+            font-size: 40px;
+            margin-top: 40px;
+            line-height: 1.6;
+            color: #ffff00;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: slideUp 1s ease-in 2s both;
+        }
+        .cta {
+            font-size: 48px;
+            font-weight: bold;
+            margin-top: 60px;
+            color: #ff6b6b;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: pulse 1s ease-in-out 4s infinite;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hook">Why does this function create a shared list?</div>
+        <div class="code-container">
+            <div class="code">def func(x=[]):
+    x.append(1)
+    return x
+func()  # [1]
+func()  # [1,1]</div>
+        </div>
+        <div class="explanation">Default args evaluated ONCE at definition, not per call. Use None instead</div>
+        <div class="cta">✨ Subscribe!</div>
+    </div>
+</body>
+</html>

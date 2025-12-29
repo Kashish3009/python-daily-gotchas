@@ -4,19 +4,32 @@
   "description": "Automated daily Python gotchas → YouTube Shorts",
   "main": "gotcha-generator.js",
   "scripts": {
-    "dev": "node gotcha-generator.js",
-    "build": "echo Build complete",
-    "start": "node api/generate-daily-gotcha.js"
-  },
-  "keywords": ["python", "youtube", "shorts"],
+  "dev": "node gotcha-generator.js",
+  "video": "node index.js",
+  "upload": "node index.js",
+  "all": "node index.js",
+  "build": "echo Build complete",
+  "start": "node index.js"
+},
+  "keywords": [
+    "python",
+    "youtube",
+    "shorts"
+  ],
   "author": "Kashish",
   "license": "ISC",
   "dependencies": {
-    "openai": "^6.15.0",
-    "elevenlabs-node": "^2.0.3",
-    "node-cron": "^4.2.1",
+    "@remotion/cli": "^4.0.396",
+    "axios": "^1.13.2",
+    "canvas": "^3.2.0",
     "dotenv": "^17.2.3",
-    "axios": "^1.13.2"
+    "elevenlabs-node": "^2.0.3",
+    "ffmpeg-static": "^5.3.0",
+    "google-auth-library": "^10.5.0",
+    "googleapis": "^169.0.0",
+    "node-cron": "^4.2.1",
+    "openai": "^6.15.0",
+    "remotion": "^4.0.396",
+    "sharp": "^0.34.5"
   }
 }
-

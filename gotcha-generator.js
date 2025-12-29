@@ -11,19 +11,24 @@ const gotchas = [
 ];
 
 function generateDailyGotcha() {
-  const script = gotchas[Math.floor(Math.random() * gotchas.length)];
-  
-  console.log('\n🔍 Selected gotcha:', script.q);
-  console.log('📡 Generating script...');
-  console.log('\n✅ Script generated:');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('📌 Hook:', script.hook);
-  console.log('💻 Code:', script.code);
-  console.log('📝 Explanation:', script.explanation);
-  console.log('🎯 CTA:', script.cta);
-  console.log('━━━━━━━━━━━━━━━━━━━━━━\n');
-  
-  return script;
+  try {
+    const script = gotchas[Math.floor(Math.random() * gotchas.length)];
+    
+    console.log('\n🔍 Selected gotcha:', script.q);
+    console.log('📡 Generating script...');
+    console.log('\n✅ Script generated:');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('📌 Hook:', script.hook);
+    console.log('💻 Code:', script.code);
+    console.log('📝 Explanation:', script.explanation);
+    console.log('🎯 CTA:', script.cta);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━\n');
+    
+    return script;
+  } catch (error) {
+    console.error('❌ Error:', error.message);
+    return null;
+  }
 }
 
-generateDailyGotcha();
+module.exports = { generateDailyGotcha };
