@@ -5,11 +5,12 @@
   "main": "gotcha-generator.js",
   "scripts": {
   "dev": "node gotcha-generator.js",
-  "video": "node index.js",
   "upload": "node index.js",
   "all": "node index.js",
-  "build": "echo Build complete",
-  "start": "node index.js"
+  "start": "node index.js",
+  "generate": "node gotcha-generator.js",
+  "video": "node video-generator.js",
+  "build": "npm install && echo 'Build complete'"
 },
   "keywords": [
     "python",
