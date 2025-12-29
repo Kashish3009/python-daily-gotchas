@@ -1,52 +1,46 @@
+import { google } from 'googleapis';
+
 export default async function handler(req, res) {
   try {
-    console.log('🚀 LIVE YOUTUBE UPLOAD TEST');
-    
-    // Step 1: Generate Gotcha
-    const gotchas = [
-      {
-        hook: "Why does function return nothing?",
-        code: "def greet():\n    print('Hello')\n\ngreet()  # Prints but returns None",
-        explanation: "Functions without explicit return return None by default",
-        cta: "Subscribe for daily gotchas!"
-      },
-      {
-        hook: "Why shared list in functions?",
-        code: "def func(x=[]):\n    x.append(1)\n    return x\nfunc()  # [1]\nfunc()  # [1,1]",
-        explanation: "Mutable default args created ONCE at definition. Use None!",
-        cta: "Fix: def func(x=None): if x is None: x = []"
-      }
-    ];
-    
-    const script = gotchas[Math.floor(Math.random() * gotchas.length)];
-    
-    // Step 2: REAL YouTube Upload Simulation (for now)
-    const youtubeAuth = process.env.YOUTUBE_AUTH_KEY ? '✅ LIVE!' : '❌ Missing';
-    
-    // Step 3: YouTube Metadata (READY TO UPLOAD)
-    const videoMetadata = {
-      title: `[TEST] ${script.hook}`,
-      description: `${script.explanation}\n\n${script.cta}\n\n#PythonGotchas #Shorts #Programming\n\n🧪 AUTO-UPLOAD TEST`,
-      tags: ['python', 'gotchas', 'programming', 'coding', 'python3', 'shorts', 'test'],
-      categoryId: 27,
-      privacyStatus: 'public' // Change to 'private' if you want
-    };
-    
-    // TODO: REAL UPLOAD (next step)
-    const uploadStatus = youtubeAuth === '✅ LIVE!' ? '✅ UPLOADING TO YOUTUBE...' : '⏳ OAuth Ready';
-    
-    res.status(200).json({
-      success: true,
-      message: '🎬 LIVE UPLOAD TEST!',
-      script: script,
-      youtube: videoMetadata,
-      uploadStatus: uploadStatus,
-      testVideoUrl: 'https://your-video-storage.com/test.mp4', // Placeholder
-      channelStatus: 'READY FOR LIVE UPLOAD!',
-      timestamp: new Date().toISOString()
+    const youtube = google.youtube({
+      version: 'v3',
+      auth: JSON.parse(process.env.YOUTUBE_AUTH_KEY)
     });
-    
+
+    // Your LIVE gotcha
+    const videoMetadata = {
+      snippet: {
+        title: "Why Python functions return NOTHING? 🤯",
+        description: "Functions without 'return' ALWAYS return None!\n\nSubscribe for daily gotchas! 👇\n#PythonGotchas #Shorts",
+        tags: ["python", "gotchas", "programming", "shorts"],
+        categoryId: 27
+      },
+      status: {
+        privacyStatus: 'public'
+      }
+    };
+
+    // UPLOAD YOUR MP4 (replace with real file)
+    const response = await youtube.videos.insert({
+      part: 'snippet,status',
+      requestBody: videoMetadata,
+      media: {
+        body: 'path/to/your-generated-short.mp4' // ← Your Remotion MP4!
+      }
+    });
+
+    res.json({
+      success: true,
+      videoId: response.data.id,
+      url: `https://youtube.com/watch?v=${response.data.id}`,
+      message: '🎬 YOUR FIRST SHORT IS LIVE ON YOUTUBE!',
+      channel: response.data.snippet.channelTitle
+    });
+
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ 
+      error: error.message,
+      details: error.response?.data 
+    });
   }
 }
