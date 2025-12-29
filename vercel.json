@@ -1,8 +1,6 @@
 {
-  "buildCommand": "npm install",
-  "outputDirectory": ".",
   "crons": [{
-    "path": "/api/daily-upload",
-    "schedule": "0 9 * * *"
+    "path": "/api/full-pipeline",
+    "schedule": "0 3 * * *"
   }]
 }
