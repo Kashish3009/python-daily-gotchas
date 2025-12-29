@@ -1,0 +1,22 @@
+{
+  "name": "python-gotchas-daily",
+  "version": "1.0.0",
+  "description": "Automated daily Python gotchas → YouTube Shorts",
+  "main": "gotcha-generator.js",
+  "scripts": {
+    "dev": "node gotcha-generator.js",
+    "build": "echo Build complete",
+    "start": "node api/generate-daily-gotcha.js"
+  },
+  "keywords": ["python", "youtube", "shorts"],
+  "author": "Kashish",
+  "license": "ISC",
+  "dependencies": {
+    "openai": "^6.15.0",
+    "elevenlabs-node": "^2.0.3",
+    "node-cron": "^4.2.1",
+    "dotenv": "^17.2.3",
+    "axios": "^1.13.2"
+  }
+}
+
