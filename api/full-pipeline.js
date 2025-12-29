@@ -1,8 +1,6 @@
-const fetch = require('node-fetch');
-
 export default async function handler(req, res) {
   try {
-    console.log('🚀 REAL AI Video Pipeline');
+    console.log('🚀 PythonGotchasDaily - AI Video Pipeline');
     
     // Step 1: Generate Gotcha
     const gotchas = [
@@ -22,8 +20,8 @@ export default async function handler(req, res) {
     
     const script = gotchas[Math.floor(Math.random() * gotchas.length)];
     
-    // Step 2: REAL Replicate Video Generation
-    let videoStatus = 'No Replicate key';
+    // Step 2: REAL Replicate Video Generation (Native fetch)
+    let videoStatus = 'Replicate key missing';
     let videoUrl = null;
     
     if (process.env.REPLICATE_API_TOKEN) {
@@ -34,7 +32,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          version: "c4f533d5cd34b9e68d1a6166b3a555b2541b9d8d9b6c4f533d5cd34b9e68d1a6", 
+          version: "c4f533d5cd34b9e68d1a6166b3a555b2541b9d8d9b6c4f533d5cd34b9e68d1a6",
           input: {
             prompt: `${script.hook}\n\n${script.code}\n\n${script.explanation}`,
             width: 1080,
@@ -44,28 +42,33 @@ export default async function handler(req, res) {
         })
       });
       
-      const prediction = await response.json();
-      videoStatus = 'Generating video...';
-      videoUrl = `https://replicate.com/predictions/${prediction.id}`;
+      if (response.ok) {
+        const prediction = await response.json();
+        videoStatus = '🎬 Generating AI video...';
+        videoUrl = `https://replicate.com/predictions/${prediction.id}`;
+      } else {
+        videoStatus = `Replicate error: ${response.status}`;
+      }
     }
     
-    // Step 3: YouTube Metadata
+    // Step 3: YouTube Ready
     const youtube = {
       title: script.hook,
-      description: `${script.explanation}\n\n${script.cta}\n#PythonGotchas`,
-      tags: ['python', 'gotchas', 'programming']
+      description: `${script.explanation}\n\n${script.cta}\n#PythonGotchas #Shorts`,
+      tags: ['python', 'gotchas', 'programming', 'coding']
     };
     
     res.status(200).json({
       success: true,
-      message: '✅ REAL AI VIDEO PIPELINE LIVE!',
+      message: '✅ AI VIDEO PIPELINE LIVE!',
       script: script,
       video: {
         status: videoStatus,
         url: videoUrl,
-        format: '1080x1920 (Shorts)'
+        format: '1080x1920 Shorts'
       },
       youtube: youtube,
+      replicateKey: !!process.env.REPLICATE_API_TOKEN,
       timestamp: new Date().toISOString()
     });
     
@@ -73,7 +76,8 @@ export default async function handler(req, res) {
     console.error('Pipeline error:', error);
     res.status(500).json({ 
       success: false, 
-      error: error.message 
+      error: error.message,
+      stack: error.stack 
     });
   }
 }
